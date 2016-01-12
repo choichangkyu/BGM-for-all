@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Flask, jsonify, render_template, request, make_response, session
+from flask import Flask, jsonify, render_template, request, make_response, session, redirect, url_for
 
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
@@ -54,7 +54,7 @@ def login():
     ).first()
     if found:
         session['logged_in'] = True
-        resp = make_response(render_template('index.html')  )
+        resp = make_response(redirect(url_for("index"))  )
         resp.set_cookie('username', username)
         print(session['logged_in'])
         return resp

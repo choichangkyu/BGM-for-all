@@ -22,7 +22,7 @@
           {% if not session.logged_in %}
                 <button class="main_button"><a  href="loginpage">login</a></button>
           {% else %}
-
+                {{ request.cookies.get('username') }}님 안녕하세요
                 <button class="main_button"><a  href="logout">logout</a></button>
           {% endif %}
           <button><a  href="signpage">sign</a></button>
