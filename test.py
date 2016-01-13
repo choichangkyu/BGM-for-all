@@ -7,27 +7,37 @@ from flask_admin.contrib.sqla import ModelView
 
 from flask_sqlalchemy import SQLAlchemy
 
+#######
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:lsy9003@localhost/flask'
 app.config['SECRET_KEY'] = 'asldjalksjdklasd'
 admin = Admin(app)
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+
 
 class User(db.Model):
 
     __tablename__ = "user"
     idx = db.Column(db.Integer, primary_key=True)
-    age = db.Column(db.Integer, default=20)
-    name = db.Column(db.String(20))
-    id = db.Column(db.String(20), unique=True)
-    pw = db.Column(db.String(20))
+    age = db.Column(db.Integer, default=19)
+    name = db.Column(db.String(30) )
+    id = db.Column(db.String(10), unique=True)
+    pw = db.Column(db.String(200))
     created = db.Column(db.DateTime, default=datetime.now)
 
 class Comment(db.Model):
     __tablename__ = "comment"
     idx = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(200))
+    text = db.Column(db.String(300))
     who = db.Column(db.Integer, db.ForeignKey('user.idx'))
 
 admin.add_view(ModelView(User, db.session))
