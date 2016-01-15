@@ -23,10 +23,10 @@
                 <button class="main_button"><a  href="loginpage">login</a></button>
           {% else %}
                 {{ request.cookies.get('username') }}님 안녕하세요
-                <button class="main_button"><a  href="logout">logout</a></button>
+                <button  class="main_button"><a  href="logout">logout</a></button>
           {% endif %}
           <button><a  href="signpage">sign</a></button>
-
+          <button><a  href="wait">대기실</a></button>
 
         <div class="item active">
           <img class="background_img" src="/static/image/djing.jpg">

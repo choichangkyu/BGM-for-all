@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Flask-SocketIO Comment Test</title>
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            namespace = '/test'; // change to an empty string to use the global namespace
+
+	    var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+            socket.on('my response', function(msg) {
+                $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+            });
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+
+            $('form#broadcast').submit(function(event) {
+                socket.emit('my broadcast event', {data: $('#broadcast_data').val()});
+                return false;
+            });
+
+            $('form#join').submit(function(event) {
+                socket.emit('join', {room: $('#join_room').val()});
+                return false;
+            });
+            $('form#new_room').submit(function(event) {
+                socket.emit('makeroom', {room: $('#make_room').val()});
+                return false;
+            });
+
+
+            $('form#roomlist').submit(function(event){
+               socket.emit('want_room_lists')
+                return false;
+            });
+            socket.on('send_room_lists', function(msg){
+                $('#log').append('<br>' + $('<div/>').text('Rooms: ' + msg.data).html());
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <h1>Flask-SocketIO Test</h1>
+    <h1>ㅎㅇ{{ rooms_lists }}</h1>
+
+    <h2>Send:</h2>
+    <form id="roomlist" method="POST" action='#'>
+        <input type="submit" value="GetRoomLists">
+    </form>
+    <form id="broadcast" method="POST" action='#'>broadcast
+        <input type="text" name="broadcast_data" id="broadcast_data" placeholder="Message">
+        <input type="submit" value="Broadcast">
+    </form>
+    <form id="new_room" method="POST" action='/makeroom'>
+
+        <input type="text" name="make_room" id="make_room" placeholder="Room Name">
+
+        <input type="submit" value="New Room">
+
+    </form>
+    <form id="join" method="POST" action='#'>
+        <input type="text" name="join_room" id="join_room" placeholder="Room Name">
+        <input type="submit" value="Join Room">
+
+    </form>
+
+    <div class="container marketing">
+
+      <div class="row">
+          {% for room_name in room_lists[] %}
+          <div class="col-lg-4">
+              <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+              <h2>{{ room_name }}</h2>
+          </div><!-- /.col-lg-4 -->
+          {% endfor %}
+      </div><!-- /.row -->
+
+    <h2>Receive:</h2>
+    <div id="log"></div>
+</body>
+</html>

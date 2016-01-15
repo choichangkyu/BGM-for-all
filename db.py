@@ -1,8 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
+from flask.ext.migrate import Migrate
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 
-from test import app
-db = SQLAlchemy(app)
-
-admin = Admin(app)
+class Comment(db.Model):
+    __tablename__ = "comment"
+    idx = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(300))
+    who = db.Column(db.Integer, db.ForeignKey('user.idx'))

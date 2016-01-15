@@ -1,0 +1,39 @@
+#comment{
+	right: 0;
+	position: fixed;
+	min-width: 250px;
+	height: 100%;
+	top: 0;
+	bottom: 0;
+
+}
+.main_div {
+	border: 1px solid black;
+}
+#main {
+	top: 6.5%;
+	position: fixed;
+	width: 82.4%;
+	height: 100%;
+	left: 0;
+}
+
+#top{
+	top: 0;
+	position: fixed;
+
+	min-height: 50px;
+	width: 82.4%;
+	left: 0;
+	right: 0;
+}
+
+#comment_user, #comment_list  {
+	display: none;
+}
+
+
+#comment_div {
+    bottom:0;
+    position: absolute;
+}
