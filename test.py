@@ -46,7 +46,7 @@ def login():
         resp = make_response(redirect(url_for("wait")) )
         resp.set_cookie('username', username)
         print(session['logged_in'], session['username'])
-        return resp, session['username']
+        return resp
     else :
         return "Login Failed"
 ##################################### Sign
